@@ -1,31 +1,57 @@
 #include "Point.h"
 #include "String.h"
 #include "HashMap.h"
+#include <stack>
+
+#define RIGHT 0
+#define LEFT 1
+#define UP 2
+#define DOWN 3
 
 void FindNeighbour(Point& star, int width, int height, char** & array) {
 	bool is_find = false;
+	std::stack<Point> myStack;
 	int counter = 0;
 	int x = star.GetX();
 	int y = star.GetY();
+	short int last_move = -1;
+	int crossroads = 0;
 	while (!is_find) {
-		if (x - 1 >= 0 && array[y][x-1] == '#') {
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				if (i == 0 && j == 0) {
+					continue;
+				}
+				if (array[y + i][x + j] == '#') {
+					crossroads++;
+				}
+			}
+		}
+		if (crossroads >= 3) {
+			myQueue.push(Point(x, y));
+		}
+		if (x - 1 >= 0 && (array[y][x-1] == '#' || array[y][x-1] == '*') && last_move != RIGHT) {
 			x = x - 1;
+			last_move = LEFT;
 			counter++;
 		}
-		else if (x + 1 <= width && array[y][x+1] == '#') {
+		else if (x + 1 <= width && (array[y][x+1] == '#' || array[y][x + 1] == '*') && last_move != LEFT) {
 			x = x + 1;
+			last_move = RIGHT;
 			counter++;
 		}
-		else if (y + 1 <= height && array[y+1][x] == '#') {
+		else if (y + 1 <= height && (array[y+1][x] == '#' || array[y+1][x] == '*') && last_move != UP) {
 			y = y + 1;
+			last_move = DOWN;
 			counter++;
 		}
-		else if (y - 1 >= 0 && array[y-1][x] == '#') {
+		else if (y - 1 >= 0 && (array[y-1][x] == '#' || array[y-1][x] == '*') && last_move != DOWN) {
 			y = y - 1;
+			last_move = UP;
 			counter++;
 		}
 		if (array[y][x] == '*') {
-			cout << counter;
+			cout << counter << endl;
 			return;
 		}
 	}
