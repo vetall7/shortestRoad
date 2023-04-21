@@ -19,8 +19,10 @@ private:
     HashNode** cities;
 public:
 	HashMap(int size);
-	void AddCity(String &name);
-	int hash(String &key);
+	void AddCity(const String &name);
+    void AddNeighbour(const String& main_city, const String& neighbour, int distance);
+    City* GetCity(const String& key);
+	int hash(const String &key);
     void Print();
     ~HashMap();
 };

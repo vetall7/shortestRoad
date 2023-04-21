@@ -1,12 +1,12 @@
 #include "HashMap.h"
-
+#include "Neighbour.h"
 
 HashMap::HashMap(int size) : size (size)
 {
 	cities = new HashNode*[size]();
 }
 
-void HashMap::AddCity(String &name)
+void HashMap::AddCity(const String &name)
 {
     int index = hash(name);
     if (cities[index] == nullptr) {
@@ -21,7 +21,28 @@ void HashMap::AddCity(String &name)
     }
 }
 
-int HashMap::hash(String &key)
+
+void HashMap::AddNeighbour(const String& main_city, const String& neighbour, int distance)
+{
+    GetCity(main_city)->AddNeigbour(Neighbour(neighbour, distance));
+}
+
+
+City* HashMap::GetCity(const String& key) {
+    int index = hash(key);
+    HashNode* node = cities[index];
+    while (node != nullptr) {
+        if (node->key.GetName() == key) {
+            return &(node->key);
+        }
+        node = node->next;
+    }
+
+    return nullptr;
+}
+
+
+int HashMap::hash(const String &key)
 {
     int hashValue = 0;
     for (int i = 0; i < key.size(); i++) {
@@ -34,7 +55,9 @@ void HashMap::Print()
 {
     for (int i = 0; i < size; i++) {
         if (cities[i] != nullptr) {
-            cout << cities[i]->key.GetName() << endl;
+            cout << cities[i]->key.GetName() << " --- ";
+            cities[i]->key.PrintN();
+            cout << endl;
         }
     }
 }

@@ -1,63 +1,71 @@
 #include "Point.h"
 #include "String.h"
 #include "HashMap.h"
-#include <stack>
+#include "Stack.h"
+#include "Stack.cpp"
 
-#define RIGHT 0
-#define LEFT 1
-#define UP 2
-#define DOWN 3
 
-void FindNeighbour(Point& star, int width, int height, char** & array) {
+String findCities(int width, int height, char**& array, Point& star);
+
+void FindNeighbour(Point& star, int width, int height, char** & array, HashMap& cities) {
 	bool is_find = false;
-	std::stack<Point> myStack;
+	Stack<Point> myStack(100);
 	int counter = 0;
-	int x = star.GetX();
-	int y = star.GetY();
-	short int last_move = -1;
-	int crossroads = 0;
-	while (!is_find) {
-		for (int i = -1; i <= 1; i++) {
-			for (int j = -1; j <= 1; j++) {
-				if (i == 0 && j == 0) {
-					continue;
-				}
-				if (array[y + i][x + j] == '#') {
-					crossroads++;
-				}
-			}
-		}
-		if (crossroads >= 3) {
-			myQueue.push(Point(x, y));
-		}
-		if (x - 1 >= 0 && (array[y][x-1] == '#' || array[y][x-1] == '*') && last_move != RIGHT) {
-			x = x - 1;
-			last_move = LEFT;
-			counter++;
-		}
-		else if (x + 1 <= width && (array[y][x+1] == '#' || array[y][x + 1] == '*') && last_move != LEFT) {
-			x = x + 1;
-			last_move = RIGHT;
-			counter++;
-		}
-		else if (y + 1 <= height && (array[y+1][x] == '#' || array[y+1][x] == '*') && last_move != UP) {
-			y = y + 1;
-			last_move = DOWN;
-			counter++;
-		}
-		else if (y - 1 >= 0 && (array[y-1][x] == '#' || array[y-1][x] == '*') && last_move != DOWN) {
-			y = y - 1;
-			last_move = UP;
-			counter++;
-		}
-		if (array[y][x] == '*') {
-			cout << counter << endl;
-			return;
+
+	bool** visited = new bool*[height];
+
+	for (int i = 0; i < height; i++) {
+		visited[i] = new bool[width];
+	}
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
+			visited[i][j] = true;
 		}
 	}
+
+	String main_city = findCities(width, height, array, star);
+	star.DistanceIncrement();
+	cities.AddCity(findCities(width, height, array, star));
+
+	myStack.push(star);
+	while (!is_find) {
+		myStack.pop();
+		for (int i = -1; i <= 1; i+=2) {
+			if (star.GetY() + i >= 0 && star.GetY() + i < height && array[star.GetY() + i][star.GetX()] == '#' && visited[star.GetY() + i][star.GetX()]) {
+				myStack.push(Point(star.GetX(), star.GetY()+i, star.GetDistance()));
+				counter++;
+			}
+			if (star.GetX() + i >= 0 && star.GetX() + i < width && array[star.GetY()][star.GetX()+i] == '#' && visited[star.GetY()][star.GetX()+i]) {
+				myStack.push(Point(star.GetX()+i, star.GetY(), star.GetDistance()));
+				counter++;
+			}
+			if (star.GetY() + i >= 0 && star.GetY() + i < height && array[star.GetY() + i][star.GetX()] == '*' && visited[star.GetY() + i][star.GetX()]) {
+				Point temp(star.GetX(), star.GetY() + i, star.GetDistance());
+				cities.AddNeighbour(main_city, findCities(width, height, array, temp), star.GetDistance());
+			}
+			if (star.GetX() + i >= 0 && star.GetX() + i < width && array[star.GetY()][star.GetX()+i] == '*' && visited[star.GetY()][star.GetX()+i]) {
+				Point temp(star.GetX()+i, star.GetY(), star.GetDistance());
+				cities.AddNeighbour(main_city, findCities(width, height, array, temp), star.GetDistance());
+			}
+		}
+		visited[star.GetY()][star.GetX()] = false;
+		if (myStack.empty()) {
+			is_find = true;
+		}
+		else {
+			star = myStack.top();
+			star.DistanceIncrement();
+		}
+	}
+
+	for (int i = 0; i < height; i++) {
+		delete[] visited[i];
+	}
+	delete[] visited;
 }
 
-void findCities(int width, int height, char**& array, Point& star, HashMap &cities) {
+
+String findCities(int width, int height, char**& array, Point& star) {
 	String sity = "";
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1; j++) {
@@ -78,9 +86,7 @@ void findCities(int width, int height, char**& array, Point& star, HashMap &citi
 						sity.append(array[star.GetY() + i][ coordinate]);
 						coordinate++;
 					}
-					cities.AddCity(sity);
-					FindNeighbour(star, width, height, array);
-					return;
+					return sity;
 				}
 			}
 		}
@@ -93,7 +99,7 @@ int main()
 	list<Point> stars;
 	int width, height;
 	cin >> width >> height;
-	char** array = new char*[height];
+	char** array = new char* [height];
 	for (int i = 0; i < height; i++) {
 		array[i] = new char[width];
 	}
@@ -107,7 +113,7 @@ int main()
 	}
 
 	for (Point star : stars) {
-		findCities(width, height, array, star, cities);
+		FindNeighbour(star, width, height, array, cities);
 	}
 
 	cities.Print();
@@ -116,5 +122,5 @@ int main()
 		delete[] array[i];
 	}
 	delete[] array;
-}
 
+}

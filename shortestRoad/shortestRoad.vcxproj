@@ -130,15 +130,19 @@
     <ClCompile Include="City.cpp" />
     <ClCompile Include="HashMap.cpp" />
     <ClCompile Include="List.cpp" />
+    <ClCompile Include="Neighbour.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="shortestRoad.cpp" />
+    <ClCompile Include="Stack.cpp" />
     <ClCompile Include="String.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="City.h" />
     <ClInclude Include="HashMap.h" />
     <ClInclude Include="List.h" />
+    <ClInclude Include="Neighbour.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="Stack.h" />
     <ClInclude Include="String.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

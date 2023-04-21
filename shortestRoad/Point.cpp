@@ -1,6 +1,10 @@
 #include "Point.h"
 
-Point::Point(int x, int y) : x(x), y(y)
+Point::Point(int x, int y) : x(x), y(y), distance (0)
+{
+}
+
+Point::Point(int x, int y, int distance) : x(x), y(y), distance(distance)
 {
 }
 
@@ -14,6 +18,11 @@ int Point::GetY()
 	return y;
 }
 
+int Point::GetDistance()
+{
+	return distance;
+}
+
 void Point::SetX(int x)
 {
 	this->x = x;
@@ -22,4 +31,9 @@ void Point::SetX(int x)
 void Point::SetY(int y)
 {
 	this->y = y;
+}
+
+void Point::DistanceIncrement()
+{
+	distance++;
 }
