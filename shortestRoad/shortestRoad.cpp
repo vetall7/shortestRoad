@@ -116,6 +116,17 @@ int main()
 		FindNeighbour(star, width, height, array, cities);
 	}
 
+	int flights;
+	cin >> flights;
+	for (int i = 0; i < flights; i++) {
+		char array[50], array2[50];
+		int dist;
+		cin >> array >> array2 >> dist;
+		String main(array);
+		String to_city(array2);
+		cities.AddNeighbour(main, to_city, dist);
+	}
+
 	cities.Print();
 
 	for (int i = 0; i < height; i++) {
