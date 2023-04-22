@@ -3,11 +3,11 @@
 #include "HashMap.h"
 #include "Stack.h"
 #include "Stack.cpp"
-
+#include <queue>
 
 String findCities(int width, int height, char**& array, Point& star);
 
-void FindNeighbour(Point& star, int width, int height, char** & array, HashMap& cities) {
+void FindNeighbour(Point& star, int width, int height, char** & array, HashMap& cities, list<String>& cities_names) {
 	bool is_find = false;
 	Stack<Point> myStack(100);
 	int counter = 0;
@@ -25,8 +25,8 @@ void FindNeighbour(Point& star, int width, int height, char** & array, HashMap& 
 
 	String main_city = findCities(width, height, array, star);
 	star.DistanceIncrement();
-	cities.AddCity(findCities(width, height, array, star));
-
+	cities_names.push_back(main_city);
+	cities.AddCity(findCities(width, height, array, star), cities_names.GetSize());
 	myStack.push(star);
 	while (!is_find) {
 		myStack.pop();
@@ -66,7 +66,7 @@ void FindNeighbour(Point& star, int width, int height, char** & array, HashMap& 
 
 
 String findCities(int width, int height, char**& array, Point& star) {
-	String sity = "";
+	String city = "";
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1; j++) {
 			if (i == 0 && j == 0) {
@@ -83,20 +83,69 @@ String findCities(int width, int height, char**& array, Point& star) {
 					}
 					coordinate++;
 					while (coordinate <= width && array[star.GetY() + i][ coordinate] != '.' && array[star.GetY() + i][ coordinate] != '#') {
-						sity.append(array[star.GetY() + i][ coordinate]);
+						city.append(array[star.GetY() + i][ coordinate]);
 						coordinate++;
 					}
-					return sity;
+					return city;
 				}
 			}
 		}
 	}
 }
 
+
+int Dijkstra(String from, String to, int city_counter, list<String>& cities_names, HashMap& citiesMap) {
+	int* cities = new int[city_counter];
+	int index = 0;
+	priority_queue<City*, vector<City*>, less<City*>> pq;
+	for (String i : cities_names) {	
+		if (i == from) {
+			cities[index] = 0;
+		}
+		cities[index] = numeric_limits<int>::max();
+		index++;
+	}
+	pq.push(citiesMap.GetCity(from));
+	
+
+	while (!pq.empty()) {
+		// Get the city with the smallest distance from the starting city
+		City* curr = pq.top();
+		pq.pop();
+
+		// Stop searching if we've found the destination city
+		if (curr->GetName() == to) {
+			break;
+		}
+
+		// Update distances to neighboring cities
+		for (Neighbour neighbor : *citiesMap.GetCity(curr->GetName())->GetNeighbours()) {
+			int neighbor_index = citiesMap.GetCity(neighbor.GetName())->GetIndex();
+			int tentative_distance = curr->GetTotalDistance() + neighbor.GetDistance();
+			if (tentative_distance < cities[neighbor_index]) {
+				cities[neighbor_index] = tentative_distance;
+				pq.push(citiesMap.GetCity(neighbor.GetName()));
+				citiesMap.GetCity(neighbor.GetName())->IncreaseDistance(neighbor.GetDistance());
+			}
+		}
+	}
+	cout << citiesMap.GetCity(to)->GetIndex() << endl;
+	int distance = cities[citiesMap.GetCity(to)->GetIndex()-1];
+
+	for (String i : cities_names) {
+		citiesMap.GetCity(i)->DistanceToZero();
+	}
+
+	delete[] cities;
+	return distance;
+}
+
+
 int main()
 {
 	HashMap cities(1000);
 	list<Point> stars;
+	list<String> cities_names;
 	int width, height;
 	cin >> width >> height;
 	char** array = new char* [height];
@@ -113,7 +162,7 @@ int main()
 	}
 
 	for (Point star : stars) {
-		FindNeighbour(star, width, height, array, cities);
+		FindNeighbour(star, width, height, array, cities, cities_names);
 	}
 
 	int flights;
@@ -127,7 +176,24 @@ int main()
 		cities.AddNeighbour(main, to_city, dist);
 	}
 
-	cities.Print();
+	int roads;
+	cin >> roads;
+	for (int i = 0; i < roads; i++) {
+		char array[50], array2[50];
+		int mode;
+		cin >> array >> array2 >> mode;
+		String main(array);
+		String to_city(array2);
+		//for (int i = 0; i < cities_names.GetSize(); i++) {
+			//if (cities_names[i] == to_city) {
+				cout << Dijkstra(main, to_city, stars.GetSize(), cities_names, cities) << endl;
+			//}
+		//}
+	}
+
+
+
+	//cities.Print();
 
 	for (int i = 0; i < height; i++) {
 		delete[] array[i];

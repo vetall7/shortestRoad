@@ -4,7 +4,7 @@
 class HashNode {
 public:
     City key;
-    HashNode* next;
+    HashNode* next; 
 
     HashNode(City key) {
         this->key = key;
@@ -19,9 +19,9 @@ private:
     HashNode** cities;
 public:
 	HashMap(int size);
-	void AddCity(const String &name);
+	void AddCity(const String &name, int index);
     void AddNeighbour(const String& main_city, const String& neighbour, int distance);
-    City* GetCity(const String& key);
+    City* GetCity(const String key);
 	int hash(const String &key);
     void Print();
     ~HashMap();

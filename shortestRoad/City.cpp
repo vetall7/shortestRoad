@@ -1,6 +1,6 @@
 #include "City.h"
 
-City::City(String name) : name(name)
+City::City(String name, int index) : name(name), index(index), total_distance(0)
 {
 }
 
@@ -43,4 +43,39 @@ void City::PrintN()
 String City::GetName()
 {
 	return name;
+}
+
+Neighbour* City::isNeighbour(String city)
+{
+	for (Neighbour i : neighbours) {
+		if (i.GetName() == city) {
+			return &i;
+		}
+	}
+	return nullptr;
+}
+
+list<Neighbour>* City::GetNeighbours()
+{
+	return &neighbours;
+}
+
+int City::GetIndex()
+{
+	return index;
+}
+
+int City::GetTotalDistance()
+{
+	return total_distance;
+}
+
+void City::IncreaseDistance(int i)
+{
+	total_distance += i;
+}
+
+void City::DistanceToZero()
+{
+	total_distance = 0;
 }

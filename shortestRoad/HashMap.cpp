@@ -6,18 +6,18 @@ HashMap::HashMap(int size) : size (size)
 	cities = new HashNode*[size]();
 }
 
-void HashMap::AddCity(const String &name)
+void HashMap::AddCity(const String &name, int index)
 {
-    int index = hash(name);
-    if (cities[index] == nullptr) {
-        cities[index] = new HashNode(City(name));
+    int i = hash(name);
+    if (cities[i] == nullptr) {
+        cities[i] = new HashNode(City(name, index));
     }
     else {
-        HashNode* node = cities[index];
+        HashNode* node = cities[i];
         while (node->next != nullptr) {
             node = node->next;
         }
-        node->next = new HashNode(City(name));
+        node->next = new HashNode(City(name, index));
     }
 }
 
@@ -28,7 +28,7 @@ void HashMap::AddNeighbour(const String& main_city, const String& neighbour, int
 }
 
 
-City* HashMap::GetCity(const String& key) {
+City* HashMap::GetCity(const String key) {
     int index = hash(key);
     HashNode* node = cities[index];
     while (node != nullptr) {
