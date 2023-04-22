@@ -26,7 +26,7 @@ void FindNeighbour(Point& star, int width, int height, char** & array, HashMap& 
 	String main_city = findCities(width, height, array, star);
 	star.DistanceIncrement();
 	cities_names.push_back(main_city);
-	cities.AddCity(findCities(width, height, array, star), cities_names.GetSize());
+	cities.AddCity(findCities(width, height, array, star), cities_names.GetSize()-1);
 	myStack.push(star);
 	while (!is_find) {
 		myStack.pop();
@@ -125,12 +125,12 @@ int Dijkstra(String from, String to, int city_counter, list<String>& cities_name
 			if (tentative_distance < cities[neighbor_index]) {
 				cities[neighbor_index] = tentative_distance;
 				pq.push(citiesMap.GetCity(neighbor.GetName()));
-				citiesMap.GetCity(neighbor.GetName())->IncreaseDistance(neighbor.GetDistance());
+				citiesMap.GetCity(neighbor.GetName())->IncreaseDistance(curr->GetTotalDistance());
 			}
 		}
 	}
-	cout << citiesMap.GetCity(to)->GetIndex() << endl;
-	int distance = cities[citiesMap.GetCity(to)->GetIndex()-1];
+
+	int distance = cities[citiesMap.GetCity(to)->GetIndex()];
 
 	for (String i : cities_names) {
 		citiesMap.GetCity(i)->DistanceToZero();
