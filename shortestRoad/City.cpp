@@ -75,3 +75,8 @@ void City::SetDistance(int distance)
 {
 	total_distance = distance;
 }
+
+int City::GetNeighboursCounter()
+{
+	return neighbours.GetSize();
+}

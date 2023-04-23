@@ -24,6 +24,14 @@ void HashMap::AddCity(const String &name, int index)
 
 void HashMap::AddNeighbour(const String& main_city, const String& neighbour, int distance)
 {
+    /*if (cities[hash(neighbour)] != nullptr) {
+        for (Neighbour i : *cities[hash(neighbour)]->key.GetNeighbours()) {
+            if (i.GetName() == main_city) {
+                GetCity(main_city)->AddNeigbour(Neighbour(neighbour, i.GetDistance()));
+                return;
+            }
+        }
+    }*/
     GetCity(main_city)->AddNeigbour(Neighbour(neighbour, distance));
 }
 

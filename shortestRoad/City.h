@@ -24,6 +24,7 @@ public:
 	void IncreaseDistance(int i);
 	void DistanceToZero();
 	void SetDistance(int distance);
+	int GetNeighboursCounter();
 
 	bool operator>(const City* other) const {
 		return total_distance > other->total_distance;

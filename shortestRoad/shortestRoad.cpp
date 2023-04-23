@@ -10,8 +10,8 @@ String findCities(int width, int height, char**& array, Point& star);
 
 void FindNeighbour(Point& star, int width, int height, char**& array, HashMap& cities, list<String>& cities_names) {
 	bool is_find = false;
-	Stack<Point> myStack(1000);
-	//PriorityQueue<Point> myStack;
+	//Stack<Point> myStack(1000);
+	PriorityQueue<Point> myStack;
 	//queue<Point> myStack;
 	bool** visited = new bool* [height];
 
@@ -41,14 +41,15 @@ void FindNeighbour(Point& star, int width, int height, char**& array, HashMap& c
 			if (star.GetY() + i >= 0 && star.GetY() + i < height && array[star.GetY() + i][star.GetX()] == '*' && visited[star.GetY() + i][star.GetX()]) {
 				Point temp(star.GetX(), star.GetY() + i, star.GetDistance());
 				cities.AddNeighbour(main_city, findCities(width, height, array, temp), star.GetDistance());
-
+				cout << main_city << "--" << findCities(width, height, array, temp) << star.GetDistance() << endl;
 			}
 			if (star.GetX() + i >= 0 && star.GetX() + i < width && array[star.GetY()][star.GetX() + i] == '*' && visited[star.GetY()][star.GetX() + i]) {
 				Point temp(star.GetX() + i, star.GetY(), star.GetDistance());
 				cities.AddNeighbour(main_city, findCities(width, height, array, temp), star.GetDistance());
+				cout << main_city << "--" << findCities(width, height, array, temp) << star.GetDistance() << endl;
 			}
 		}
-		//cout << myStack.size() << endl;
+		cout << myStack.size() << endl;
 		visited[star.GetY()][star.GetX()] = false;
 		if (myStack.empty()) {
 			is_find = true;
@@ -59,6 +60,14 @@ void FindNeighbour(Point& star, int width, int height, char**& array, HashMap& c
 		}
 	}
 
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
+			cout << visited[i][j];
+		}
+		cout << endl;
+	}
+	return;
+	cout << main_city << endl;
 	for (int i = 0; i < height; i++) {
 		delete[] visited[i];
 	}
