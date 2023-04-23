@@ -11,21 +11,12 @@ void City::SetName(String& name)
 
 void City::AddNeigbour(Neighbour n)
 {
-	/*for (Neighbour i : neighbours) {
-		if (i.GetName() == n.GetName()) {
-			if (n.GetDistance() < i.GetDistance()) {
-				i.SetDistance(n.GetDistance());
-				cout << i.GetDistance() << endl;
-			}
-			return;
-		}
-	}*/
 
 	for (int i = 0; i < neighbours.GetSize(); i++) {
 		if (neighbours[i].GetName() == n.GetName()) {
 			if (n.GetDistance() < neighbours[i].GetDistance()) {
 				neighbours[i].SetDistance(n.GetDistance());
-				cout << neighbours[i].GetDistance() << endl;
+				//cout << neighbours[i].GetDistance() << endl;
 			}
 			return;
 		}
@@ -62,7 +53,7 @@ list<Neighbour>* City::GetNeighbours()
 
 int City::GetIndex()
 {
-	return index;
+	 return index;
 }
 
 int City::GetTotalDistance()
@@ -78,4 +69,9 @@ void City::IncreaseDistance(int i)
 void City::DistanceToZero()
 {
 	total_distance = 0;
+}
+
+void City::SetDistance(int distance)
+{
+	total_distance = distance;
 }

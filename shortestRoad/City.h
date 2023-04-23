@@ -23,6 +23,7 @@ public:
 	int GetTotalDistance();
 	void IncreaseDistance(int i);
 	void DistanceToZero();
+	void SetDistance(int distance);
 
 	bool operator>(const City* other) const {
 		return total_distance > other->total_distance;

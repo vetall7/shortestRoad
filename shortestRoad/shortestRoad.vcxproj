@@ -142,6 +142,7 @@
     <ClInclude Include="List.h" />
     <ClInclude Include="Neighbour.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="PriorityQueue.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="String.h" />
   </ItemGroup>

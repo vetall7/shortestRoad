@@ -8,6 +8,7 @@ private:
 
 public:
     Stack(int size);
+    Stack() = default;
     ~Stack();
     void push(T value);
     void pop();

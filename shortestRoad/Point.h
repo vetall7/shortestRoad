@@ -14,4 +14,9 @@ public:
 	void SetY(int y);
 
 	void DistanceIncrement();
+
+
+	bool operator<(const Point& other) const {
+		return distance < other.distance;
+	}
 };

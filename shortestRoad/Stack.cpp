@@ -28,9 +28,9 @@ void Stack<T>::pop() {
 
 template <typename T>
 T Stack<T>::top() {
-    if (top_index != -1) {
+   // if (top_index != -1) {
         return data[top_index];
-    }
+   // }
 }
 
 
