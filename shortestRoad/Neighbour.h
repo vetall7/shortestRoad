@@ -9,6 +9,5 @@ public:
 	Neighbour() = default;
 	String GetName();
 	int GetDistance();
-
 	void SetDistance(int distance);
 };
