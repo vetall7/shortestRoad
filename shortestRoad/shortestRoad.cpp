@@ -128,7 +128,7 @@ void Dijkstra(String from, String to, vector<String>& cities_names, HashMap& cit
 	}
 	int* cities = new int[cities_names.size()];
 	int* prev = nullptr;
-	if (mode) {
+	if (mode && cities_names.size() > 2) {
 		prev = new int[cities_names.size()]; // New array to keep track of previous city
 	}
 
@@ -154,23 +154,28 @@ void Dijkstra(String from, String to, vector<String>& cities_names, HashMap& cit
 		for (Neighbour neighbor : *citiesMap.GetCity(curr->GetName())->GetNeighbours()) {
 			int neighbor_index = citiesMap.GetCity(neighbor.GetName())->GetIndex();
 			int tentative_distance = curr->GetTotalDistance() + neighbor.GetDistance();
+			if (cities_names.size() == 2) {
+				cout  << tentative_distance << "   " << cities[0] << "   " << cities[1] << "   " << neighbor_index << "   ";
+			}
 			if (tentative_distance < cities[neighbor_index]) {
 				cities[neighbor_index] = tentative_distance;
-				if (mode) { prev[neighbor_index] = curr->GetIndex(); } // Record the previous city
+				if (mode && cities_names.size() > 2) { prev[neighbor_index] = curr->GetIndex(); } // Record the previous city
 				pq.push(citiesMap.GetCity(neighbor.GetName()));
 				citiesMap.GetCity(neighbor.GetName())->SetDistance(tentative_distance);
 			}
 		}
 	} 
 	cout << cities[citiesMap.GetCity(to)->GetIndex()];
-	if (mode) {
+	if (mode && cities_names.size() > 2) {
 		list<String> path;
 		int curr_index = citiesMap.GetCity(to)->GetIndex();
 		int main_index = citiesMap.GetCity(from)->GetIndex();
 		while (curr_index != main_index) {
-			cout << cities_names[curr_index];
 			path.push_front(cities_names[curr_index]);
 			curr_index = prev[curr_index];
+			if (cities_names.size() == 2) {
+				break;
+			}
 		}
 		path.push_front(from);
 		int index = 0;
