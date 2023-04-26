@@ -9,15 +9,13 @@
 
 String findCities(int width, int height, char**& array, Point& star);
 
-void FindNeighbour(Point& star, int width, int height, char**& array, HashMap& cities, list<String>& cities_names, int Size) {
+void FindNeighbour(Point& star, int width, int height, char**& array, HashMap& cities, vector<String>& cities_names, int Size) {
 	bool is_find = false;
 	//Stack<Point> myStack(1000);
 	PriorityQueue<Point> myStack;
 	static bool** visited = nullptr;
 	static int i = -1;
 	i++;
-	static int counter = Size;
-	counter--;
 	//cout << i << endl;
 	//bool is = true;
 	if (visited == nullptr) {
@@ -37,8 +35,8 @@ void FindNeighbour(Point& star, int width, int height, char**& array, HashMap& c
 
 	String main_city = findCities(width, height, array, star);
 	star.DistanceIncrement();
-	cities_names.push_front(main_city);
-	cities.AddCity(findCities(width, height, array, star), counter);
+	cities_names.push_back(main_city);
+	cities.AddCity(findCities(width, height, array, star), cities_names.size()-1);
 	myStack.push(star);
 	while (!is_find) {
 		myStack.pop();
@@ -123,15 +121,15 @@ String findCities(int width, int height, char**& array, Point& star) {
 }
 
 
-void Dijkstra(String from, String to, int city_counter, list<String>& cities_names, HashMap& citiesMap, int mode) {
+void Dijkstra(String from, String to, vector<String>& cities_names, HashMap& citiesMap, int mode) {
 	if (to == from) {
 		cout << 0 << endl;
 		return;
 	}
-	int* cities = new int[city_counter];
+	int* cities = new int[cities_names.size()];
 	int* prev = nullptr;
 	if (mode) {
-		prev = new int[city_counter]; // New array to keep track of previous city
+		prev = new int[cities_names.size()]; // New array to keep track of previous city
 	}
 
 	int index = 0;
@@ -165,11 +163,12 @@ void Dijkstra(String from, String to, int city_counter, list<String>& cities_nam
 		}
 	} 
 	cout << cities[citiesMap.GetCity(to)->GetIndex()];
-	if (mode == 1) {
+	if (mode) {
 		list<String> path;
 		int curr_index = citiesMap.GetCity(to)->GetIndex();
 		int main_index = citiesMap.GetCity(from)->GetIndex();
 		while (curr_index != main_index) {
+			cout << cities_names[curr_index];
 			path.push_front(cities_names[curr_index]);
 			curr_index = prev[curr_index];
 		}
@@ -196,7 +195,7 @@ int main()
 {
 	HashMap cities(100000);
 	list<Point> stars;
-	list<String> cities_names;
+	vector<String> cities_names;
 	int width, height;
 	cin >> width >> height;
 	char** array = new char* [height];
@@ -252,7 +251,7 @@ int main()
 		cin >> array >> array2 >> mode;
 		String main(array);
 		String to_city(array2);
-		Dijkstra(main, to_city, stars.GetSize(), cities_names, cities, mode);
+		Dijkstra(main, to_city, cities_names, cities, mode);
 	}
 
 	//if (width == 2048) {
