@@ -21,13 +21,13 @@ void FindNeighbour(Point& star, int width, int height, char**& array, HashMap& c
 			visited[i] = new bool[width];
 		}
 	}
-	if (!visited[star.GetY()][star.GetX()]) {
+	//if (!visited[star.GetY()][star.GetX()]) {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				visited[i][j] = true;
 			}
 		}
-	}
+	//}
 
 	String main_city = findCities(width, height, array, star);
 	star.DistanceIncrement();
@@ -48,18 +48,26 @@ void FindNeighbour(Point& star, int width, int height, char**& array, HashMap& c
 			if (star.GetY() + i >= 0 && star.GetY() + i < height && array[star.GetY() + i][star.GetX()] == '*') {
 				visited[star.GetY() + i][star.GetX()] = false;
 				Point temp(star.GetX(), star.GetY() + i, star.GetDistance());
-				if (!(findCities(width, height, array, temp) == main_city)) cities.AddNeighbour(main_city, findCities(width, height, array, temp), star.GetDistance());
-				if (cities_names.size() == 2 && i == Size) {
-					cout << findCities(width, height, array, temp);
+				if (!(findCities(width, height, array, temp) == main_city))
+				{
+					cities.AddNeighbour(main_city, findCities(width, height, array, temp), star.GetDistance());
+
 				}
+				/*if (width == 1535) {
+					cout << cities.GetCity(main_city)->GetNeighboursCounter() << " " << findCities(width, height, array, temp) << " " << main_city;
+				}*/
 			}
 			if (star.GetX() + i >= 0 && star.GetX() + i < width && array[star.GetY()][star.GetX() + i] == '*' ) {
 				visited[star.GetY()][star.GetX() + i] = false;
 				Point temp(star.GetX() + i, star.GetY(), star.GetDistance());
-				if (!(findCities(width, height, array, temp) == main_city)) cities.AddNeighbour(main_city, findCities(width, height, array, temp), star.GetDistance());
-				if (cities_names.size() == 2) {
-					cout << findCities(width, height, array, temp);
+				if (!(findCities(width, height, array, temp) == main_city)){ cities.AddNeighbour(main_city, findCities(width, height, array, temp), star.GetDistance());
+
+				
 				}
+
+				/*if (width == 1535) {
+					cout << cities.GetCity(main_city)->GetNeighboursCounter() << " " << findCities(width, height, array, temp) << " " << main_city;
+				}*/
 			}
 		}
 		visited[star.GetY()][star.GetX()] = false;
@@ -140,15 +148,15 @@ void Dijkstra(String from, String to, vector<String>& cities_names, HashMap& cit
 		City* curr = pq.top();
 		pq.pop();
 		// Update distances to neighboring cities
-		if (cities_names.size() == 2) {
-			cout << citiesMap.GetCity(from)->GetNeighboursCounter() << " ";
-			for (Neighbour i : *citiesMap.GetCity(from)->GetNeighbours()) {
-				cout << i.GetName() << " ";
-			}
-			//cities[0] = 1179644;
-			//cities[1] = 1179644;
-			break;
-		}
+		//if (cities_names.size() == 2) {
+		//	cout << citiesMap.GetCity(from)->GetNeighboursCounter() << " " << citiesMap.GetCity(to)->GetNeighboursCounter() << " ";
+		//	for (Neighbour i : *citiesMap.GetCity(from)->GetNeighbours()) {
+		//		cout << i.GetName() << " ";
+		//	}
+		//	//cities[0] = 1179644;
+		//	//cities[1] = 1179644;
+		//	break;
+		//}
 		for (Neighbour neighbor : *citiesMap.GetCity(curr->GetName())->GetNeighbours()) {
 			int neighbor_index = citiesMap.GetCity(neighbor.GetName())->GetIndex();
 			int tentative_distance = curr->GetTotalDistance() + neighbor.GetDistance();
@@ -218,14 +226,6 @@ int main()
 	for (Point star : stars) {
 		FindNeighbour(star, width, height, array, cities, cities_names, stars.GetSize());
 	}
-
-
-	/*for (String i : cities_names) {
-		cout << i << " ";
-	}
-	return 0;*/
-
-	//cities.Print();
 
 	int flights;
 	cin >> flights;

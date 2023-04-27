@@ -12,16 +12,16 @@ void City::SetName(String& name)
 void City::AddNeigbour(Neighbour n)
 {
 
-	for (int i = 0; i < neighbours.GetSize(); i++) {
-		if (neighbours[i].GetName() == n.GetName()) {
-			if (n.GetDistance() < neighbours[i].GetDistance()) {
-				neighbours[i].SetDistance(n.GetDistance());
-				//cout << neighbours[i].GetDistance() << endl;
-			}
-			return;
-		}
-	}
-	neighbours.push_back(n);
+	//for (int i = 0; i < neighbours.GetSize(); i++) {
+	//	if (neighbours[i].GetName() == n.GetName()) {
+	//		if (n.GetDistance() < neighbours[i].GetDistance()) {
+	//			neighbours[i].SetDistance(n.GetDistance());
+	//			//cout << neighbours[i].GetDistance() << endl;
+	//		}
+	//		return;
+	//	}
+	//}
+	neighbours.push_front(n);
 }
 
 void City::PrintN()
