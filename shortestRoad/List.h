@@ -30,20 +30,20 @@ public:
 
 	class Iterator {
 	private:
-		Node<T>* current_node;
+		Node<T>* size_node;
 	public:
-		Iterator(Node<T>* node) : current_node(node) {}
+		Iterator(Node<T>* node) : size_node(node) {}
 		bool operator==(const Iterator& other) const {
-			return current_node == other.current_node;
+			return size_node == other.size_node;
 		}
 		bool operator!=(const Iterator& other) const {
 			return !(*this == other);
 		}
 		T& operator*() const {
-			return current_node->data;
+			return size_node->data;
 		}
 		Iterator& operator++() {
-			current_node = current_node->pNext;
+			size_node = size_node->pNext;
 			return *this;
 		}
 		Iterator operator++(int) {

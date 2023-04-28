@@ -133,7 +133,6 @@
     <ClCompile Include="Neighbour.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="shortestRoad.cpp" />
-    <ClCompile Include="Stack.cpp" />
     <ClCompile Include="String.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -143,8 +142,8 @@
     <ClInclude Include="Neighbour.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="PriorityQueue.h" />
-    <ClInclude Include="Stack.h" />
     <ClInclude Include="String.h" />
+    <ClInclude Include="vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

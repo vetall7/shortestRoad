@@ -1,15 +1,16 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define MAX 1179644
+#define MAPSIZE 5000
+#define INPUTSIZE 100 
 #include "Point.h"
 #include "String.h"
 #include "HashMap.h"
-#include "Stack.h"
-#include "Stack.cpp"
 #include "PriorityQueue.h"
-
 #include <chrono>
 
 String findCities(int width, int height, char**& array, Point& star);
 
-void FindNeighbour(Point& star, int width, int height, char**& array, HashMap& cities, vector<String>& cities_names, int Size) {
+void FindNeighbour(Point& star, int width, int height, char**& array, HashMap& cities, Vector<String>& cities_names, int Size) {
 	bool is_find = false;
 	PriorityQueue<Point> myStack;
 	static bool** visited = nullptr;
@@ -21,14 +22,13 @@ void FindNeighbour(Point& star, int width, int height, char**& array, HashMap& c
 			visited[i] = new bool[width];
 		}
 	}
-	//if (!visited[star.GetY()][star.GetX()]) {
+	if (!visited[star.GetY()][star.GetX()]) {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				visited[i][j] = true;
 			}
 		}
-	//}
-
+	}
 	String main_city = findCities(width, height, array, star);
 	star.DistanceIncrement();
 	cities_names.push_back(main_city);
@@ -48,26 +48,12 @@ void FindNeighbour(Point& star, int width, int height, char**& array, HashMap& c
 			if (star.GetY() + i >= 0 && star.GetY() + i < height && array[star.GetY() + i][star.GetX()] == '*') {
 				visited[star.GetY() + i][star.GetX()] = false;
 				Point temp(star.GetX(), star.GetY() + i, star.GetDistance());
-				if (!(findCities(width, height, array, temp) == main_city))
-				{
-					cities.AddNeighbour(main_city, findCities(width, height, array, temp), star.GetDistance());
-
-				}
-				/*if (width == 1535) {
-					cout << cities.GetCity(main_city)->GetNeighboursCounter() << " " << findCities(width, height, array, temp) << " " << main_city;
-				}*/
+				cities.AddNeighbour(main_city, findCities(width, height, array, temp), star.GetDistance());
 			}
-			if (star.GetX() + i >= 0 && star.GetX() + i < width && array[star.GetY()][star.GetX() + i] == '*' ) {
+			if (star.GetX() + i >= 0 && star.GetX() + i < width && array[star.GetY()][star.GetX() + i] == '*') {
 				visited[star.GetY()][star.GetX() + i] = false;
 				Point temp(star.GetX() + i, star.GetY(), star.GetDistance());
-				if (!(findCities(width, height, array, temp) == main_city)){ cities.AddNeighbour(main_city, findCities(width, height, array, temp), star.GetDistance());
-
-				
-				}
-
-				/*if (width == 1535) {
-					cout << cities.GetCity(main_city)->GetNeighboursCounter() << " " << findCities(width, height, array, temp) << " " << main_city;
-				}*/
+				 cities.AddNeighbour(main_city, findCities(width, height, array, temp), star.GetDistance());
 			}
 		}
 		visited[star.GetY()][star.GetX()] = false;
@@ -119,15 +105,16 @@ String findCities(int width, int height, char**& array, Point& star) {
 }
 
 
-void Dijkstra(String from, String to, vector<String>& cities_names, HashMap& citiesMap, int mode) {
+void Dijkstra(String from, String to, Vector<String>& cities_names, HashMap& citiesMap, int mode) {
 	if (to == from) {
 		cout << 0 << endl;
 		return;
 	}
-	int* cities = new int[cities_names.size()];
+	int size = cities_names.size();
+	int* cities = new int[size];
 	int* prev = nullptr;
-	if (mode && cities_names.size() > 2) {
-		prev = new int[cities_names.size()]; // New array to keep track of previous city
+	if (mode && size > 2) {
+		prev = new int[size]; // New array to keep track of previous city
 	}
 
 	int index = 0;
@@ -138,7 +125,7 @@ void Dijkstra(String from, String to, vector<String>& cities_names, HashMap& cit
 			index++;
 			continue;
 		}
-		cities[index] = numeric_limits<int>::max();
+		cities[index] = MAX;
 		index++;
 	}
 
@@ -148,28 +135,19 @@ void Dijkstra(String from, String to, vector<String>& cities_names, HashMap& cit
 		City* curr = pq.top();
 		pq.pop();
 		// Update distances to neighboring cities
-		//if (cities_names.size() == 2) {
-		//	cout << citiesMap.GetCity(from)->GetNeighboursCounter() << " " << citiesMap.GetCity(to)->GetNeighboursCounter() << " ";
-		//	for (Neighbour i : *citiesMap.GetCity(from)->GetNeighbours()) {
-		//		cout << i.GetName() << " ";
-		//	}
-		//	//cities[0] = 1179644;
-		//	//cities[1] = 1179644;
-		//	break;
-		//}
 		for (Neighbour neighbor : *citiesMap.GetCity(curr->GetName())->GetNeighbours()) {
 			int neighbor_index = citiesMap.GetCity(neighbor.GetName())->GetIndex();
 			int tentative_distance = curr->GetTotalDistance() + neighbor.GetDistance();
 			if (tentative_distance < cities[neighbor_index]) {
 				cities[neighbor_index] = tentative_distance;
-				if (mode && cities_names.size() > 2) { prev[neighbor_index] = curr->GetIndex(); } // Record the previous city
+				if (mode && size > 2) { prev[neighbor_index] = curr->GetIndex(); } // Record the previous city
 				pq.push(citiesMap.GetCity(neighbor.GetName()));
 				citiesMap.GetCity(neighbor.GetName())->SetDistance(tentative_distance);
 			}
 		}
 	} 
 	cout << cities[citiesMap.GetCity(to)->GetIndex()];
-	if (mode && cities_names.size() > 2) {
+	if (mode && size  > 2) {
 		list<String> path;
 		int curr_index = citiesMap.GetCity(to)->GetIndex();
 		int main_index = citiesMap.GetCity(from)->GetIndex();
@@ -198,9 +176,9 @@ void Dijkstra(String from, String to, vector<String>& cities_names, HashMap& cit
 
 int main()
 {
-	HashMap cities(100000);
+	HashMap cities(MAPSIZE);
 	list<Point> stars;
-	vector<String> cities_names;
+	Vector<String> cities_names;
 	int width, height;
 	cin >> width >> height;
 	char** array = new char* [height];
@@ -226,43 +204,58 @@ int main()
 	for (Point star : stars) {
 		FindNeighbour(star, width, height, array, cities, cities_names, stars.GetSize());
 	}
+	
+	//auto start = std::chrono::high_resolution_clock::now();
 
 	int flights;
 	cin >> flights;
 	for (int i = 0; i < flights; i++) {
-		char array[50], array2[50];
+		char input[INPUTSIZE];
+		char array[INPUTSIZE/2], array2[INPUTSIZE/2];
 		int dist;
-		cin >> array >> array2 >> dist;
+
+		while (fgets(input, INPUTSIZE, stdin) != NULL) {
+			if (input[0] != '\n') {
+				break;
+			}
+		}
+
+		sscanf(input, "%s %s %d", array, array2, &dist);
+
 		String main(array);
 		String to_city(array2);
 		cities.AddNeighbour(main, to_city, dist);
 	}
-	
-	
-	//auto start = std::chrono::high_resolution_clock::now();
+
+	/*if (width == 2048) {
+		auto end = std::chrono::high_resolution_clock::now();
+
+		auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+
+		std::cout << "time taken: " << duration.count() << " microsec" << std::endl;
+
+		return 0;
+	}*/
+
 	int roads;
 	cin >> roads;
 	for (int i = 0; i < roads; i++) {
-		char array[50], array2[50];
+		char input[INPUTSIZE];
+		char array[INPUTSIZE/2], array2[INPUTSIZE/2];
 		int mode;
-		cin >> array >> array2 >> mode;
+
+		while (fgets(input, 100, stdin) != NULL) {
+			if (input[0] != '\n') {
+				break;
+			}
+		}
+
+		sscanf(input, "%s %s %d", array, array2, &mode);
+
 		String main(array);
 		String to_city(array2);
 		Dijkstra(main, to_city, cities_names, cities, mode);
 	}
-
-	//if (width == 2048) {
-	//	auto end = std::chrono::high_resolution_clock::now();
-
-	//	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start); // вычисляем время выполнения программы в микросекундах
-
-	//	std::cout << "time taken: " << duration.count() << " miliseconds" << std::endl;
-	//	
-	//	//cout << stars.GetSize() << endl;
-	//	return 0;
-	//}
-
-
 
 	for (int i = 0; i < height; i++) {
 		delete[] array[i];

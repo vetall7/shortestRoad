@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include "vector.h"
 #include <iostream>
 
 template<typename T>
@@ -7,9 +7,9 @@ class PriorityQueue {
 public:
     PriorityQueue() {}
 
-   
+
     void push(T value) {
-        
+
         heap.push_back(value);
 
         int index = heap.size() - 1;
@@ -46,7 +46,7 @@ public:
     }
 
     bool empty() {
-        return heap.empty();
+        return (heap.size()==0);
     }
 
 private:
@@ -62,5 +62,5 @@ private:
         return 2 * index + 2;
     }
 
-    std::vector<T> heap;
+    Vector<T> heap;
 };

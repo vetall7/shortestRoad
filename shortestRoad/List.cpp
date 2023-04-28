@@ -20,12 +20,12 @@ void list<T>::push_back(T data)
 		head = new Node<T>(data); // creating the node and returns address
 	}
 	else {
-		Node<T>* current = this->head;
+		Node<T>* size = this->head;
 
-		while (current->pNext != nullptr) {
-			current = current->pNext;
+		while (size->pNext != nullptr) {
+			size = size->pNext;
 		}
-		current->pNext = new Node<T>(data);
+		size->pNext = new Node<T>(data);
 	}
 	Size++;
 }

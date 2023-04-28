@@ -11,17 +11,7 @@ void City::SetName(String& name)
 
 void City::AddNeigbour(Neighbour n)
 {
-
-	//for (int i = 0; i < neighbours.GetSize(); i++) {
-	//	if (neighbours[i].GetName() == n.GetName()) {
-	//		if (n.GetDistance() < neighbours[i].GetDistance()) {
-	//			neighbours[i].SetDistance(n.GetDistance());
-	//			//cout << neighbours[i].GetDistance() << endl;
-	//		}
-	//		return;
-	//	}
-	//}
-	neighbours.push_front(n);
+	neighbours.push_back(n);
 }
 
 void City::PrintN()
@@ -46,7 +36,7 @@ Neighbour* City::isNeighbour(String city)
 	return nullptr;
 }
 
-list<Neighbour>* City::GetNeighbours()
+vector<Neighbour>* City::GetNeighbours()
 {
 	return &neighbours;
 }
@@ -78,5 +68,5 @@ void City::SetDistance(int distance)
 
 int City::GetNeighboursCounter()
 {
-	return neighbours.GetSize();
+	return neighbours.size();
 }

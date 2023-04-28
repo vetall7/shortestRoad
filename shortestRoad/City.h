@@ -7,7 +7,7 @@
 class City {
 private:
 	String name;
-	list<Neighbour> neighbours;
+	vector<Neighbour> neighbours;
 	int index;
 	int total_distance;
 public:
@@ -18,7 +18,7 @@ public:
 	void PrintN();
 	String GetName();
 	Neighbour* isNeighbour(String city);
-	list<Neighbour>* GetNeighbours();
+	vector<Neighbour>* GetNeighbours();
 	int GetIndex();
 	int GetTotalDistance();
 	void IncreaseDistance(int i);
