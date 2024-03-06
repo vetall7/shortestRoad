@@ -45,7 +45,7 @@ Compile the program and run it with appropriate input files or input from the co
 ### Input:
 ![Map](example_input.png)
 
-**Output:**
+**Output:** <br>
 ![Map](example_output.png)
 
 
