@@ -42,7 +42,7 @@ Compile the program and run it with appropriate input files or input from the co
 
 ## Example
 
-**Input:**
+### Input:
 20 20
 .........GDANSK.....
 ...................
