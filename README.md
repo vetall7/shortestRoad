@@ -43,36 +43,10 @@ Compile the program and run it with appropriate input files or input from the co
 ## Example
 
 ### Input:
-20 20
-.........GDANSK..... <br>
-................... <br>
-........#........... <br>
-........#........... <br>
-##################. <br>
-#SZCZECIN.........#. <br>
-#.................#. <br>
-##................#. <br>
-.#################. <br>
-.#...WARSZAWA....... <br>
-.#.................. <br>
-.#############...... <br>
-.#...........#...... <br>
-.#..WROCLAW.##...... <br>
-.#................ <br>
-.####.......#KIELCE. <br>
-......##.#########. <br>
-.OPOLE..#.*.......#. <br>
-........#.KRAKOW..#. <br>
-........###########. <br>
-0 <br>
-3 <br>
-KIELCE KRAKOW 0 <br>
-KRAKOW GDANSK 0 <br>
-KRAKOW GDANSK 1
+![Map](example_input.png)
 
 **Output:**
-5 <br>
-40 <br>
-40 KIELCE SZCZECIN <br>
+![Map](example_output.png)
+
 
 **Note**: This program can efficiently deal with very large maps.
