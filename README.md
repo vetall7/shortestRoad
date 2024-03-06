@@ -74,3 +74,5 @@ KRAKOW GDANSK 1
 5 <br>
 40 <br>
 40 KIELCE SZCZECIN <br>
+
+**Note**: This program can efficiently deal with very large maps.
