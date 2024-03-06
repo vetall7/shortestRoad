@@ -40,15 +40,37 @@ For each query:
 
 Compile the program and run it with appropriate input files or input from the command line.
 
-Example:
-```
-./city_travel < input.txt
-```
+## Example
 
-## Contributors
+**Input:**
+20 20
+.........GDANSK.....
+...................
+........#...........
+........#...........
+##################.
+#SZCZECIN.........#.
+#.................#.
+##................#.
+.#################.
+.#...WARSZAWA.......
+.#..................
+.#############......
+.#...........#......
+.#..WROCLAW.##......
+.#................
+.####.......#KIELCE.
+......##.#########.
+.OPOLE..#.*.......#.
+........#.KRAKOW..#.
+........###########.
+0
+3
+KIELCE KRAKOW 0
+KRAKOW GDANSK 0
+KRAKOW GDANSK 1
 
-- [Your Name]
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+**Output:**
+5
+40
+40 KIELCE SZCZECIN
